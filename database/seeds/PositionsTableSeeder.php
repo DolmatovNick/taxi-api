@@ -12,12 +12,6 @@ class PositionsTableSeeder extends Seeder
      */
     public function run()
     {
-//        DB::table('positions')->insert([
-//            ['name' => 'Driver', 'id' => 1],
-//            ['name' => 'Call Operator', 'id' => 2],
-//            ['name' => 'Director', 'id' => 3]
-//        ]);
-
         factory('App\Position')->create(['name' => 'driver', 'id' => 1]);
         factory('App\Position')->create(['name' => 'call Operator', 'id' => 2]);
         factory('App\Position')->create(['name' => 'director', 'id' => 3]);

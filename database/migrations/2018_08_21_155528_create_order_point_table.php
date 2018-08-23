@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateOrderPointTable extends Migration
 {
@@ -33,6 +34,8 @@ class CreateOrderPointTable extends Migration
      */
     public function down()
     {
-        Schema::drop('order_points');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        Schema::dropIfExists('order_points');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }

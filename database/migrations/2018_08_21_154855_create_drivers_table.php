@@ -17,6 +17,8 @@ class CreateDriversTable extends Migration
             $table->increments('id');
             $table->string('fio');
             $table->integer('position_id')->unsigned()->index();
+
+            $table->foreign('position_id')->references('id')->on('positions');
         });
     }
 
@@ -27,6 +29,8 @@ class CreateDriversTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
         Schema::dropIfExists('drivers');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }

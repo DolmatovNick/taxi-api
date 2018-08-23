@@ -32,6 +32,8 @@ class CreateOrderStatusPivotTable extends Migration
      */
     public function down()
     {
-        Schema::drop('order_status');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        Schema::dropIfExists('order_status');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 }
