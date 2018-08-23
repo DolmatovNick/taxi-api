@@ -1,65 +1,223 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# Taxi API
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## Задание
+ 
+Создать API для сайта “службы такси”: нужно хранить данные о
+водителе (фио, должность),
+операторе (фио, должность)
+автомобиле (марка, цвет, номер) - на одном автомобиле могут работать несколько
+водителей, у одного водителя может быть несколько автомобилей,
 
-## About Laravel
+заказы - данные о том, когда и какой водитель какой заказ выполнял и на каком
+автомобиле (время заказа, адрес отправления, адрес назначения, пришёл ли клиент,
+оператор)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+Для отправки запросов использовать RestAPI.
+ Запрос к API инициализации /init - скрипт должен удалять все таблицы из БД, если
+такие имеются и создавать все необходимые таблицы, после чего внести в них
+тестовые данные: не менее 5 водителей, не менее 10 автомобилей, не менее 30
+записей в истории заказов, не менее 3х заказов “в процессе”.
+ Запросы на добавление/изменения/удаления данных - не реализовывать их, создав
+методы, которые будут выводить “Not Implemented”.
+ Запросы на получение данных (в скобках - ожидаемый на тестовых данных ответ):
+ Найти всех водителей, которые не имеют ни одного заказа за всё время
+работы (минимум 2 в ответе)
+ Найти все адреса, которые не имеют успешного статуса и имена операторов,
+которые их приняли (минимум 5 записей в ответе, операторы могут
+повторяться)
+ Найти всех водителей, которые имеют более 100 выполненных заказов (“Not
+Found”)
+ Найти всех водителей, которые имеют более 10 выполненных заказов
+(минимум 1 водитель)
+ Вывести список водителей в порядке убывания количества выполненных
+заказов (имена всех водителей)
+ Найти список автомобилей, на которых работают более 1го водителя и
+менее 4х водителей (минимум 2 варианта)
+ Список всех сотрудников службы такси (водителей и операторов)
+ Предусмотреть запрос для авторизации перед получением доступа к
+остальным частям API. Логин: admin, пароль: 123
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+(&quot;Успешный статус заказа&quot;, то же самое что &quot;выполненный заказ&quot; - клиент доставлен по
+адресу назначения)
+Все данные должны возвращаться в формате JSON.
+Использовать php 5.6+, любой php фреймворк, либо без него, MySQL. В пояснительной
+записке описать работу API с указанием какие использовались паттерны проектирования
+кода и почему.
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+# API endpoints
 
-## Learning Laravel
+Support endpoints
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+| № | Name | Method | Need auth| Endpoint|  
+| :---: | :--- | :--- | :---: | :--- | 
+| 1 | Init app   | GET  | Yes | /api/v1/init |
+| 2 | Get drivers | GET | Yes | /api/v1/drivers |
+| 3 | Get employees | GET  | Yes | /api/v1/employees|
+| 4 | Get cars   | GET  | Yes | /api/v1/cars |
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+## Drivers filters
 
-## Laravel Sponsors
+| № | Name | Method | Endpoint|  
+| :---: | :--- | :--- | :--- | 
+| 1 | Get drivers having orders   | /drivers  | &haveOrder=1 |
+| 2 | Get drivers having no orders   | /drivers  |  &haveOrder=0 |
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+## Orders filters
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
+| № | Name | Method | Endpoint|  
+| :---: | :--- | :--- | :--- | 
+| 1 | Get drivers having orders   | /drivers  | &haveOrder=1 |
+| 2 | Get drivers having no orders   | /drivers  |  &haveOrder=0 |
 
-## Contributing
+## Get drivers
+##### Найти всех водителей, которые не имеют ни одного заказа за всё время работы (минимум 2 в ответе)
+##### GET /api/v1/drivers?haveOrders=0
+##### Response
+```json
+{  
+   data:[  
+      {  
+         id:1,
+         fio:"Mr. Desmond Eichmann Sr."
+      },
+      {  
+         id:2,
+         fio:"Dr. Daryl Flatley"
+      }
+   ],
+   links:{  
+    
+   },
+   meta:{  
+    
+   }
+}
+```
+##### Success code is 200
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Get orders
+##### GET /api/v1/orders?&dontHaveStatuses[]=6
+```
+##### Response
+```json
+{  
+   data:[  
+      {  
+         id:6,
+         operator:"Cecile Swaniawski",
+         points:[  
+            {  
+               id:13,
+               address:"982 Medhurst Manors Suite 394 Robelview, PA 54314-5251",
+               type:"pickup"
+            },
+            {  
+               id:14,
+               address:"80746 Merl Pike Eldoraberg, PA 03493",
+               type:"stepout"
+            }
+         ]
+      },
+      {  
+         id:9,
+         operator:"Miss Rosetta Jerde",
+         points:[  
+            {  
+               id:19,
+               address:"1233 Moore Pass Mitchellburgh, IA 38561-4032",
+               type:"pickup"
+            },
+            {  
+               id:20,
+               address:"640 Altenwerth Ville Suite 734 Lake Luciousville, AK 69536",
+               type:"stepout"
+            }
+         ]
+      }
+   ],
+   links:{  
+    
+   },
+   meta:{  
+    
+   }
+}
+```
 
-## Security Vulnerabilities
+## Edit recipe
+##### PUT /recipes/{recipe}
+```json
+{
+    "name"  : "Sugar and water recipe",
+    "text"	: "Take one spoon of sugar. And one glass of water. Mix. Enjoy!"
+}
+```
+##### Response
+```json
+{
+    "id"            : 1,
+    "recipe_url"	: "/recipes/1",
+    "upload_image_method"	: "PUT",
+    "upload_image_url"	    : "/recipes/1/image"
+}
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Add image to recipe
+##### PUT /recipes/{recipe}/iamge
 
-## License
+How to add image: Use HTTP HEAD binary format, json is no needs  
+```json
+{
+    "id": 1,
+    "recipe_url": "/recipes/1",
+    "image_url": "/images/1.png"
+}
+```
+##### Response
+```json
+{
+    "id": 1,
+    "recipe_url": "/recipes/1",
+    "image_url": "/images/1.png"
+}
+```
+     Note: API changes format input images to .png
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Delete recipe
+### DELETE /recipes/{recipe}
+##### Success code is 204
+
+## Get user recipe list
+##### GET /users/{user_id}recipes
+
+##### Response
+```json
+[
+    {
+        "id"  : 1,
+        "name"  : "Sugar and water recipe",
+        "text"	: "Take one spoon of sugar. And one glass of water. Mix. Enjoy!",
+        "image_url" : "/recipes/1.png"
+    },
+    {
+        "id"  : 2,
+        "name"  : "Sugar and water recipe",
+        "text"	: "Take one spoon of sugar. And one glass of water. Mix. Enjoy!",
+        "image_url" : "/recipes/2.png"
+    }
+]
+```
+##### Success code is 200
+
+# How to use endpoints
+
+## 1 Setup
+
+1 Implement /setup/db.sql file on a database
+ 
+2 Rename /config/creds.inc.php to /config/creds.php and type your credentials 
+
+## 2 Authenticate
+
+You have to add "Authorization" field in HTTP HEAD and fill it with a "key" 
+from the "Create user" endpoint
