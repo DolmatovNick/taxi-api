@@ -17,7 +17,7 @@ $factory->define(App\User::class, function (Faker $faker) {
     return [
         'name' => 'admin',
         'email' => 'admin@mail.com',
-        'password' => '$2y$10$uilLyDPt1yxfJb46zHJ40OeJ1pklwz1HKlRdki4Au17VZWvUmPMNq', // 123
+        'password' => '$2y$10$uilLyDPt1yxfJb46zHJ40OeJ1pklwz1HKlRdki4Au17VZWvUmPMNq',
         'remember_token' => str_random(10),
     ];
 });
