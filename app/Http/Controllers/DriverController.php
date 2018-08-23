@@ -6,26 +6,22 @@ use App\Driver;
 use App\Filters\DriversFilters;
 use App\Http\Resources\DriverCollection;
 use App\Http\Resources\DriverResource;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
-class DriverController extends Controller
+class DriverController extends ApiController
 {
 
     public function index(DriversFilters $filter)
     {
-        $drivers = Driver::filter($filter)->select('drivers.*')->paginate(5);
+        // DB::enableQueryLog();
 
-        return $this->getResponse($drivers);
+        $driversCollection = DriverResource::collection(
+            Driver::filter($filter)->select('drivers.*')->paginate(5)
+        );
+
+        // dd( DB::getQueryLog() );
+
+        return $this->getResponse($driversCollection);
     }
 
-    private function getResponse(LengthAwarePaginator $drivers)
-    {
-        $collection = DriverResource::collection($drivers);
-
-        if ( $drivers->total() == 0 ) {
-            return $collection->response()->setStatusCode(404);
-        }
-
-        return $collection;
-    }
 }

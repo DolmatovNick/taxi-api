@@ -19,4 +19,13 @@ class DriverResource extends JsonResource
             'fio' => $this->fio,
         ];
     }
+
+    public function withResponse($request, $response)
+    {
+        dump($request);
+        dump($response);
+        dd(123);
+
+        $response->setStatusCode(404);
+    }
 }

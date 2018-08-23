@@ -9,8 +9,6 @@ class CarsFilters extends Filters {
 
     protected function haveDriversCount($countJson)
     {
-        // &haveDriversCount={"min":1,"max":4}
-
         $extractHavingConditions = function($countJson) {
             $count = \json_decode($countJson);
 
@@ -29,11 +27,12 @@ class CarsFilters extends Filters {
 
         $havingString = $extractHavingConditions($countJson);
 
-        return $this->builder->whereHas('orders', function($orders) use ($havingString) {
+        return $this->builder->whereIn('id', function($query) use ($havingString) {
 
             if ($havingString != '') {
-                $orders
+                $query
                     ->select('orders.car_id')
+                    ->from('orders')
                     ->groupBy('orders.car_id')
                     ->havingRaw($havingString);
             }
