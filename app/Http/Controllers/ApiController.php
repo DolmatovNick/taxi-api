@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Driver;
-use App\Filters\DriversFilters;
-use App\Http\Resources\DriverCollection;
-use App\Http\Resources\DriverResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Response;
 
 class ApiController extends Controller
 {
 
-    protected function getResponse(ResourceCollection $collection)
+    protected function getCollectionResponse(ResourceCollection $collection)
     {
         if ( $collection->resource->total() == 0 ) {
-            return $collection->response()->setStatusCode(404);
+            return static::gerResponseError('Not found', 404);
         }
 
         return $collection;
+    }
+
+    protected static function gerResponseError($message, $code)
+    {
+        return Response::json([
+            'error' => [
+                'message' => $message
+            ]
+        ], $code)->withException(new \Exception());
     }
 }

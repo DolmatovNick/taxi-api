@@ -16,7 +16,7 @@ class CarController extends ApiController
             Car::filter($filter)->paginate(5)
         );
 
-        return $this->getResponse($cars);
+        return $this->getCollectionResponse($cars);
     }
 
 }

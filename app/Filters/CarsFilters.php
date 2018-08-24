@@ -15,11 +15,11 @@ class CarsFilters extends Filters {
             $sql = [];
             if ( isset($count->min) ) {
                 $min = (int) $count->min;
-                $sql[] = "COUNT(DISTINCT orders.driver_id) > {$min}";
+                $sql[] = "COUNT(DISTINCT orders.driver_id) >= {$min}";
             }
             if (isset($count->max)) {
                 $max = (int) $count->max;
-                $sql[] = "COUNT(DISTINCT orders.driver_id) <  {$max}";
+                $sql[] = "COUNT(DISTINCT orders.driver_id) <=  {$max}";
             }
 
             return implode(' AND ', $sql);

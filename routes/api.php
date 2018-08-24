@@ -20,7 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::group(['prefix' => 'v1'], function() {
 
     Route::fallback(function(){
@@ -29,12 +28,16 @@ Route::group(['prefix' => 'v1'], function() {
 
     Route::get('/init', 'InitController@index');
 
-    Route::get('/drivers', 'DriverController@index')->middleware('auth.basic');
+    Route::get('/drivers', 'DriverController@index');
 
-    Route::get('/employees', 'EmployeeController@index')->middleware('auth.basic');
+    Route::get('/employees', 'EmployeeController@index');
 
-    Route::get('/orders', 'OrderController@index')->middleware('auth.basic');
+    Route::get('/orders', 'OrderController@index');
 
-    Route::get('/cars', 'CarController@index')->middleware('auth.basic');
+    Route::get('/cars', 'CarController@index');
+
+    Route::get('/point-only-for-auth', function(){
+        return response()->json(['message' => 'You transferred correct token']);
+    })->middleware('auth:api');
 
 });

@@ -14,6 +14,6 @@ class EmployeeController extends ApiController
             Employee::orderBy('fio')->paginate(5)
         );
 
-        return $this->getResponse($employees);
+        return $this->getCollectionResponse($employees);
     }
 }

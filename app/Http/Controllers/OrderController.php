@@ -17,7 +17,7 @@ class OrderController extends ApiController
             ->paginate(5)
         );
 
-        return $this->getResponse($orders);
+        return $this->getCollectionResponse($orders);
     }
 
 }

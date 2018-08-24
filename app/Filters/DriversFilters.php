@@ -5,14 +5,23 @@ namespace App\Filters;
 
 class DriversFilters extends Filters {
 
-    protected $filters = ['haveOrders', 'haveOrdersCount', 'haveStatuses', 'orderByOrdersCount'];
+    protected $filters = [
+        'have',
+        'nothave',
+        'haveOrdersCount', 'haveStatuses', 'orderByOrdersCount'
+    ];
 
-    protected function haveOrders($driverHaveOrders)
+    protected function have(array $objects)
     {
-        if ($driverHaveOrders == 1) {
-            return $this->builder->has('orders');
-        } else {
-            return $this->builder->doesntHave('orders');
+        foreach ($objects as $object) {
+            $this->builder->has($object);
+        }
+    }
+
+    protected function notHave(array $objects)
+    {
+        foreach ($objects as $object) {
+            $this->builder->doesntHave($object);
         }
     }
 
@@ -32,11 +41,11 @@ class DriversFilters extends Filters {
             $sql = [];
             if ( isset($count->min) ) {
                 $min = (int) $count->min;
-                $sql[] = "COUNT(orders.driver_id) > {$min}";
+                $sql[] = "COUNT(orders.driver_id) >= {$min}";
             }
             if (isset($count->max)) {
                 $max = (int) $count->max;
-                $sql[] = "COUNT(orders.driver_id) < {$max}";
+                $sql[] = "COUNT(orders.driver_id) <= {$max}";
             }
 
             return implode(' AND ', $sql);

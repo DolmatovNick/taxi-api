@@ -6,10 +6,8 @@ use App\Driver;
 use App\Filters\DriversFilters;
 use App\Http\Resources\DriverCollection;
 use App\Http\Resources\DriverResource;
-use Illuminate\Support\Facades\DB;
 
-class DriverController extends ApiController
-{
+class DriverController extends ApiController {
 
     public function index(DriversFilters $filter)
     {
@@ -21,7 +19,7 @@ class DriverController extends ApiController
 
         // dd( DB::getQueryLog() );
 
-        return $this->getResponse($driversCollection);
+        return $this->getCollectionResponse($driversCollection);
     }
 
 }
