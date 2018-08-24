@@ -14,6 +14,7 @@ class Status extends Model
     public const CLIENT_IN_THE_CAR = 4;
     public const CLIENT_DELIVERED = 5;
     public const ORDER_COMPLETE = 6;
+    public const ORDER_ABORTED_AND_CLOSED = 10;
 
     public function orders()
     {

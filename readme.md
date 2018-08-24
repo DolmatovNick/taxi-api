@@ -73,6 +73,16 @@ Found”)
 
 # Common API endpoints
 
+| № | Status | Order complete |  
+| :---: | :--- | :---: |  
+| 1 | Заказ поступил   | NO  | 
+| 2 | Водитель выехал   | NO  | 
+| 3 | Водитель на месте  | NO  | 
+| 4 | Клиент в машине   | NO  | 
+| 5 | Клиент доставлен   | NO  | 
+| 6 | Заказ выполнен   | YES  | 
+| 7 | Заказ не выполнен и закрыт | YES  | 
+
 # API endpoints
 
 Support endpoints
@@ -88,14 +98,14 @@ Support endpoints
 
 | № | Name | Endpoint | Filter|  
 | :---: | :--- | :--- | :--- | 
-| 1 | Get drivers having orders   | /drivers  | &haveOrder=1 |
-| 2 | Get drivers having no orders   | /drivers  |  &haveOrder=0 |
+| 1 | Get drivers having orders   | /drivers  | &have[]=orders |
+| 2 | Get drivers having no orders   | /drivers  |  &notHave=orders |
 
 ## Orders filters
 
 | № | Name | Endpoint | Filter|  
 | :---: | :--- | :--- | :--- | 
-| 1 | Get drivers having orders   | /drivers  | &haveOrder=1 |
+| 1 | Get orders don't have statuses  | /drivers  | &dontHaveStatuses[]=6 |
 | 2 | Get drivers having no orders   | /drivers  |  &haveOrder=0 |
 
 ## Cars filters

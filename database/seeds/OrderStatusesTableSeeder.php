@@ -24,20 +24,40 @@ class OrderStatusesTableSeeder extends Seeder
             $this->addOrderStatus($order, Status::OPERATOR_ACCEPTED_ORDER, $time);
             if ($this->orderStoppedOnThisStep()) continue;
 
+            if ($this->orderAborted()) {
+                $this->setOrderAsAborted($time, $order);
+                continue;
+            }
+
             // 2 Operator call to driver, and driver has moved to the client
             $time = $this->plusTimeForCallingToDriver($time);
             $this->addOrderStatus($order, Status::DRIVER_RIDING_TO_THE_CLIENT, $time);
             if ($this->orderStoppedOnThisStep()) continue;
+
+            if ($this->orderAborted()) {
+                $this->setOrderAsAborted($time, $order);
+                continue;
+            }
 
             // 3 Driver wait the client
             $time = $this->plusTimeForMoving($time);
             $this->addOrderStatus($order, Status::DRIVER_WAIT_THE_CLIENT, $time);
             if ($this->orderStoppedOnThisStep()) continue;
 
+            if ($this->orderAborted()) {
+                $this->setOrderAsAborted($time, $order);
+                continue;
+            }
+
             // 4 The client is in the car
             $time = $this->plusTimeForWaitingClient($time);
             $this->addOrderStatus($order, Status::CLIENT_IN_THE_CAR, $time);
             if ($this->orderStoppedOnThisStep()) continue;
+
+            if ($this->orderAborted()) {
+                $this->setOrderAsAborted($time, $order);
+                continue;
+            }
 
             /**
              * @var \App\OrderPoint $point
@@ -49,12 +69,22 @@ class OrderStatusesTableSeeder extends Seeder
 
                 $time = $this->plusTimeForMoving($time);
                 if ($this->orderStoppedOnThisStep()) continue;
+
+                if ($this->orderAborted()) {
+                    $this->setOrderAsAborted($time, $order);
+                    continue;
+                }
             }
 
             // 7 Client is delivered
             $time = $this->plusTimeForMoving($time);
             $this->addOrderStatus($order, Status::CLIENT_DELIVERED, $time);
             if ($this->orderStoppedOnThisStep()) continue;
+
+            if ($this->orderAborted()) {
+                $this->setOrderAsAborted($time, $order);
+                continue;
+            }
 
             // 6 Order closed
             $time = $this->plusTimeForCloseOrder($time);
@@ -87,6 +117,11 @@ class OrderStatusesTableSeeder extends Seeder
         $order->save();
     }
 
+    private function orderAborted() : bool
+    {
+        return rand(1, 100) <= 10 ? true : false;
+    }
+
     private function orderStoppedOnThisStep() : bool
     {
         return rand(1, 100) <= 10 ? true : false;
@@ -106,6 +141,18 @@ class OrderStatusesTableSeeder extends Seeder
 
     private function plusTimeForCloseOrder($timestamp) {
         return $timestamp + rand(60, 180);
+    }
+
+    /**
+     * @param $time
+     * @param $order
+     * @return mixed
+     */
+    protected function setOrderAsAborted($time, $order)
+    {
+        $time = $this->plusTimeForCallingToDriver($time);
+        $this->addOrderStatus($order, Status::ORDER_ABORTED_AND_CLOSED, $time);
+        return $time;
     }
 
 }

@@ -20,6 +20,7 @@ class StatusesTableSeeder extends Seeder
             ['name' => 'Клиент в машине',       'id' => Status::CLIENT_IN_THE_CAR],
             ['name' => 'Клиент доставлен',      'id' => Status::CLIENT_DELIVERED],
             ['name' => 'Заказ выполнен',        'id' => Status::ORDER_COMPLETE],
+            ['name' => 'Заказ не выполнен и закрыт',        'id' => Status::ORDER_ABORTED_AND_CLOSED],
         ]);
     }
 
