@@ -7,8 +7,8 @@ class DriversFilters extends Filters {
 
     protected $filters = [
         'have',
-        'nothave',
-        'haveOrdersCount', 'haveStatuses', 'orderByOrdersCount'
+        'notHave',
+        'haveOrdersCount', 'haveStatuses', 'orderByOrders'
     ];
 
     protected function have(array $objects)
@@ -66,10 +66,11 @@ class DriversFilters extends Filters {
         });
     }
 
-    protected function orderByOrdersCount($sortDirection = 'ASC')
+    protected function orderByOrders($sortDirection = 'ASC')
     {
-        if ( !in_array(strtolower($sortDirection), ['asc', 'desc']) ) {
-            $sortDirection = 'ASC';
+        $sortDirection = strtolower($sortDirection);
+        if ( !in_array( $sortDirection, ['asc', 'desc']) ) {
+            $sortDirection = 'asc';
         }
 
         $this->builder

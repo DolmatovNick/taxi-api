@@ -60,6 +60,9 @@ $factory->define(App\Car::class, function (Faker $faker) {
 });
 
 $factory->define(App\Order::class, function (Faker $faker) {
+
+    $status_id = App\Status::OPERATOR_ACCEPTED_ORDER;
+
     return [
         'driver_id' => function() {
             return factory('App\Driver')->create()->id;
@@ -69,7 +72,8 @@ $factory->define(App\Order::class, function (Faker $faker) {
         },
         'car_id' => function() {
             return factory('App\Car')->create()->id;
-        }
+        },
+        'status_id' => $status_id
     ];
 });
 
