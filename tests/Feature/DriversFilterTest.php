@@ -7,25 +7,27 @@ use App\Status;
 
 class DriversFilterTest extends TestFromFakeDB
 {
+    const apiPoint = '/api/v1/drivers?';
+
     public function getSelectFilters()
     {
         return [
-            // statuses[]=6&statuses[]=5
+            // &orderStatus=6
             [
-                '/api/v1/drivers?',
+                static::apiPoint,
                 function() {
                     $orders = factory('App\Order', 10)->create();
                     $this->orderSetStatus($orders[0], Status::ORDER_COMPLETE);
-                    $this->orderSetStatus($orders[1], Status::CLIENT_DELIVERED);
+                    $this->orderSetStatus($orders[1], Status::ORDER_COMPLETE);
                 },
                 function() {
-                    return $this->setArrayFilter('haveStatuses',[Status::ORDER_COMPLETE, Status::CLIENT_DELIVERED]);
+                    return '&orderStatus='.Status::ORDER_COMPLETE;
                 },
                 2
             ],
-            // notHave[]=orders
+            // &notHave[]=orders
             [
-                '/api/v1/drivers?',
+                static::apiPoint,
                 function() {
                     factory('App\Order', 3)->create();
                     factory('App\Driver', 5)->create();
@@ -35,10 +37,10 @@ class DriversFilterTest extends TestFromFakeDB
                 },
                 5
             ],
-            // have[]=orders
+            // &have[]=orders
             [
 
-                '/api/v1/drivers?',
+                static::apiPoint,
                 function() {
                     factory('App\Order', 3)->create();
                     factory('App\Driver', 5)->create();
@@ -48,9 +50,9 @@ class DriversFilterTest extends TestFromFakeDB
                 },
                 3
             ],
-            // &haveOrdersCount={"min":13,"max":13}
+            // &haveOrdersCount={"min":10,"max":15}
             [
-                '/api/v1/drivers?',
+                static::apiPoint,
                 function() {
                     $driver = factory('App\Driver')->create();
                     factory('App\Order', 1)->create(['driver_id' => $driver->id]);
@@ -66,9 +68,9 @@ class DriversFilterTest extends TestFromFakeDB
                 },
                 2
             ],
-            // '&haveOrdersCount={"min":1}
+            // '&haveOrdersCount={"min":10}
             [
-                '/api/v1/drivers?',
+                static::apiPoint,
                 function() {
                     $driver = factory('App\Driver')->create();
                     factory('App\Order', 1)->create(['driver_id' => $driver->id]);
@@ -80,13 +82,13 @@ class DriversFilterTest extends TestFromFakeDB
                     factory('App\Order', 15)->create(['driver_id' => $driver->id]);
                 },
                 function() {
-                    return '&haveOrdersCount={"min":10}';
+                    return '&haveOrdersCount={"min":11}';
                 },
-                2
+                1
             ],
             // &haveOrdersCount={"max":10}
             [
-                '/api/v1/drivers?',
+                static::apiPoint,
                 function() {
                     $driver = factory('App\Driver')->create();
                     factory('App\Order', 1)->create(['driver_id' => $driver->id]);
@@ -108,9 +110,9 @@ class DriversFilterTest extends TestFromFakeDB
     public function getSortFilters()
     {
         return [
-            // &orderByOrdersCount=ASC
+            // &orderByOrders=ASC
             [
-                '/api/v1/drivers?',
+                static::apiPoint,
                 function() {
                     $drivers = factory('App\Driver', 6)->create();
 
@@ -126,9 +128,9 @@ class DriversFilterTest extends TestFromFakeDB
                 },
                 6
             ],
-            // &orderByOrdersCount=DESC
+            // &orderByOrders=DESC
             [
-                '/api/v1/drivers?',
+                static::apiPoint,
                 function() {
                     $drivers = factory('App\Driver', 6)->create();
 
@@ -147,6 +149,48 @@ class DriversFilterTest extends TestFromFakeDB
         ];
     }
 
+    protected $filters = [
+        '&orderStatus='.Status::OPERATOR_ACCEPTED_ORDER,
+        '&have[]=orders',
+        '&haveOrdersCount={"min":6,"max":6}',
+        '&orderByOrders=DESC'
+    ];
+
+    public function getAllFiltersTogether()
+    {
+        return [
+            // All-1
+            [
+                static::apiPoint,
+                function() {
+                    $drivers = factory('App\Driver', 6)->create();
+
+                    $drivers->each(
+                        function($driver) {
+                            factory('App\Order', 5)->create(['driver_id' => $driver->id]);
+                        }
+                    );
+
+                    factory('App\Order', 1)->create(['driver_id' => $drivers[5]->id]);
+
+                    return $drivers[5];
+                },
+                function() {
+                    return implode('', $this->filters);
+                },
+                1
+            ],
+        ];
+    }
+
+    public function getMergedFilters()
+    {
+        return array_merge(
+            $this->getSortFilters(),
+            $this->getAllFiltersTogether()
+        );
+    }
+
     /**
      * @dataProvider getSelectFilters
      * @test
@@ -161,7 +205,7 @@ class DriversFilterTest extends TestFromFakeDB
     }
 
     /**
-     * @dataProvider getSortFilters
+     * @dataProvider getMergedFilters
      * @test
      */
     public function it_sorted_by_filters($point, $getData, $getFilter, $totalCount)

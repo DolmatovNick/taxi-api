@@ -2,81 +2,49 @@
 
 namespace App\Filters;
 
+use App\Filters\Driver\DriverHas;
+use App\Filters\Driver\DriverHasOrdersCount;
+use App\Filters\Driver\DriverNotHas;
+use App\Filters\Driver\DriverHasOrdersWithStatuses;
+use App\Filters\Driver\DriverOrderByOrdersCount;
 
 class DriversFilters extends Filters {
 
     protected $filters = [
         'have',
         'notHave',
-        'haveOrdersCount', 'haveStatuses', 'orderByOrders'
+        'orderStatus',
+        'haveOrdersCount',
+        'orderByOrders'
     ];
 
     protected function have(array $objects)
     {
-        foreach ($objects as $object) {
-            $this->builder->has($object);
-        }
+        (new DriverHas())->asScope($this->builder, $objects);
     }
 
     protected function notHave(array $objects)
     {
-        foreach ($objects as $object) {
-            $this->builder->doesntHave($object);
-        }
+        (new DriverNotHas())->asScope($this->builder, $objects);
     }
 
-    protected function haveStatuses(array $statuses)
+    protected function orderStatus(int $status)
     {
-        return $this->builder->whereHas('orders', function($orders) use($statuses){
-            $orders->inStatuses($statuses);
-        });
+        (new DriverHasOrdersWithStatuses())->asScope($this->builder, $status);
     }
 
-    protected function haveOrdersCount($countJson)
+    protected function haveOrdersCount(string $countJson)
     {
-        $getSqlHavingCondition = function ($countJson)
-        {
-            $count = \json_decode($countJson);
+        list($min, $max) = $this->extractMinAndMaxFromJson($countJson);
 
-            $sql = [];
-            if ( isset($count->min) ) {
-                $min = (int) $count->min;
-                $sql[] = "COUNT(orders.driver_id) >= {$min}";
-            }
-            if (isset($count->max)) {
-                $max = (int) $count->max;
-                $sql[] = "COUNT(orders.driver_id) <= {$max}";
-            }
-
-            return implode(' AND ', $sql);
-
-        };
-
-        $havingString = $getSqlHavingCondition($countJson);
-
-        return $this->builder->whereIn('id', function($query) use ($havingString) {
-
-            if ($havingString != '') {
-                $query->select('orders.driver_id')
-                    ->from('orders')
-                    ->groupBy('orders.driver_id')
-                    ->havingRaw($havingString);
-            }
-
-        });
+        (new DriverHasOrdersCount())->asScope($this->builder, $min, $max);
     }
 
     protected function orderByOrders($sortDirection = 'ASC')
     {
-        $sortDirection = strtolower($sortDirection);
-        if ( !in_array( $sortDirection, ['asc', 'desc']) ) {
-            $sortDirection = 'asc';
-        }
+        $sortDirection = $this->normalizeOrderBy($sortDirection);
 
-        $this->builder
-            ->leftJoin('orders', 'orders.driver_id', '=', 'drivers.id')
-            ->groupBy('drivers.id', 'drivers.fio', 'drivers.position_id')
-            ->orderByRaw("count(orders.driver_id) {$sortDirection}");
+        (new DriverOrderByOrdersCount())->asScope($this->builder, $sortDirection);
     }
 
 }

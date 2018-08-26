@@ -46,14 +46,14 @@ class Order extends Model
         return $filters->apply($query);
     }
 
-    public function scopeInStatuses(Builder $query, array $statuses)
+    public function scopeInStatus(Builder $query, int $status)
     {
-        return $query->whereIn('status_id', $statuses);
+        return $query->where('status_id', $status);
     }
 
-    public function scopeNotInStatuses(Builder $query, array $statuses)
+    public function scopeNotInStatus(Builder $query, int $status)
     {
-        return $query->whereNotIn('status_id', $statuses);
+        return $query->where('status_id', '<>', $status);
     }
 
 }
