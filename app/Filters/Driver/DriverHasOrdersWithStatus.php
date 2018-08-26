@@ -6,7 +6,7 @@ namespace App\Filters\Driver;
 use App\Filters\Contracts\ICriteria;
 use Illuminate\Database\Eloquent\Builder;
 
-class DriverHasOrdersWithStatuses implements ICriteria {
+class DriverHasOrdersWithStatus implements ICriteria {
 
     /**
      * @var int

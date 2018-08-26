@@ -14,8 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->clearDB();
-
         $this->call([
             StatusesTableSeeder::class,
             PositionsTableSeeder::class,
@@ -32,22 +30,6 @@ class DatabaseSeeder extends Seeder
             OrderStatusesTableSeeder::class,
         ]);
 
-    }
-
-    private function clearDB() {
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
-
-        DB::table('statuses')->truncate();
-        DB::table('users')->truncate();
-        DB::table('positions')->truncate();
-        DB::table('car_models')->truncate();
-        DB::table('cars')->truncate();
-        DB::table('orders')->truncate();
-        DB::table('order_points')->truncate();
-        DB::table('order_status')->truncate();
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 
 }

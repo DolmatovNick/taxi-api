@@ -18,7 +18,7 @@ class OrderStatusesTableSeeder extends Seeder
 
         foreach ($orders as $order) {
 
-            $time = $this->orderStartDateTime();
+            $time = $order->created_at->getTimestamp();
 
             // 1 Operator accepted the order
             $this->addOrderStatus($order, Status::OPERATOR_ACCEPTED_ORDER, $time);
@@ -92,17 +92,6 @@ class OrderStatusesTableSeeder extends Seeder
         }
 
     }
-
-    /**
-     * @return DateTime|int
-     */
-    private function orderStartDateTime()
-    {
-        $time = new DateTime();
-        $time = $time->getTimestamp() + rand(-100000, 100000);
-        return $time;
-    }
-
 
     private function addOrderStatus(Order $order, $status, int $timestamp)
     {

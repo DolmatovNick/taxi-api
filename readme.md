@@ -1,5 +1,21 @@
 # Taxi API
 
+## Design patterns
+
+Шаблон `Criteria` для реализаци фильтров.
+Причина выбора: Общепринятый паттерн для фильтрации чего-либо, 
+повышает читабельность кода, снижает издержки на сопровождение.
+
+?? Шаблон `Dependensy Injection` для передачи экземпляров классов в контроллеры.
+Причина выбора: Общепринятый подход и в Laravel в частности, 
+повышает читабельность кода, снижает издержки на сопровождение.
+
+Шаблон `Factory` для создания объектов на тестах и для seeding database.
+Причина выбора: Удобный способ создания объектов, скрывает сложные механизмы создания объектов за 
+однотипным и простым интерфейсом, повышает читабельность кода, снижает издержки на сопровождение.
+
+Шаблон `Template Method`
+
 ## Задание
  
 Создать API для сайта “службы такси”: нужно хранить данные о
@@ -73,7 +89,7 @@ Found”)
 
 # Common API endpoints
 
-| № | Status | Order complete |  
+| Id | Status name | Order complete |  
 | :---: | :--- | :---: |  
 | 1 | Заказ поступил   | NO  | 
 | 2 | Водитель выехал   | NO  | 
@@ -81,7 +97,7 @@ Found”)
 | 4 | Клиент в машине   | NO  | 
 | 5 | Клиент доставлен   | NO  | 
 | 6 | Заказ выполнен   | YES  | 
-| 7 | Заказ не выполнен и закрыт | YES  | 
+| 10 | Заказ не выполнен и закрыт | YES  | 
 
 # API endpoints
 
@@ -100,13 +116,18 @@ Support endpoints
 | :---: | :--- | :--- | :--- | 
 | 1 | Get drivers having orders   | /drivers  | &have[]=orders |
 | 2 | Get drivers having no orders   | /drivers  |  &notHave=orders |
+| 3 | Get drivers having orders with status X  | /drivers  |  &orderStatus=6 |
+| 4 | Get drivers having count  of orders more than "min" and less than "max"  | /drivers  |  &haveOrdersCount={"min":1,"max":10} |
+
+## Drivers sorts
+
+| 1 | Sort drivers by count of orders | /drivers  |  &orderByOrders=ASC/DESC |
 
 ## Orders filters
 
 | № | Name | Endpoint | Filter|  
 | :---: | :--- | :--- | :--- | 
-| 1 | Get orders don't have statuses  | /drivers  | &dontHaveStatuses[]=6 |
-| 2 | Get drivers having no orders   | /drivers  |  &haveOrder=0 |
+| 1 | Get orders with not status X | /drivers  | &notInStatus=6 |
 
 ## Cars filters
 
@@ -189,49 +210,7 @@ Support endpoints
    }
 }
 ```
-
-## Edit recipe
-##### PUT /recipes/{recipe}
-```json
-{
-    "name"  : "Sugar and water recipe",
-    "text"	: "Take one spoon of sugar. And one glass of water. Mix. Enjoy!"
-}
-```
-##### Response
-```json
-{
-    "id"            : 1,
-    "recipe_url"	: "/recipes/1",
-    "upload_image_method"	: "PUT",
-    "upload_image_url"	    : "/recipes/1/image"
-}
-```
-
-## Add image to recipe
-##### PUT /recipes/{recipe}/iamge
-
-How to add image: Use HTTP HEAD binary format, json is no needs  
-```json
-{
-    "id": 1,
-    "recipe_url": "/recipes/1",
-    "image_url": "/images/1.png"
-}
-```
-##### Response
-```json
-{
-    "id": 1,
-    "recipe_url": "/recipes/1",
-    "image_url": "/images/1.png"
-}
-```
-     Note: API changes format input images to .png
-
-## Delete recipe
-### DELETE /recipes/{recipe}
-##### Success code is 204
+##### Success code is 200
 
 ## Get user recipe list
 ##### GET /users/{user_id}recipes
@@ -259,8 +238,10 @@ How to add image: Use HTTP HEAD binary format, json is no needs
 
 ## 1 Setup
 
-1. Login using the credentials login: `admin@mail.com` and password: `123`
 1. Run `api/v1/init` API endpoint for set up database
+2. All endpoints can used without authentication, except `/api/v1/point-only-for-auth`
+3. Endpoint `/api/v1/point-only-for-auth` needs adding in header `Authorization: Bearer 4f1cc459-a229-43b2-abae-cc2e46e56cbe` 
+4. Login using the credentials login: `admin@mail.com` and password: `123`
 
 ## 2 Authenticate
 

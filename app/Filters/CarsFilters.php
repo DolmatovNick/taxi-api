@@ -6,6 +6,8 @@ use App\Filters\Car\CarHasDriversCount;
 
 class CarsFilters extends Filters {
 
+    use HttpTransform;
+
     protected $filters = ['haveDriversCount'];
 
     protected function haveDriversCount($countJson)
