@@ -1,8 +1,6 @@
 <?php
 
-use App\Driver;
 use App\Http\Resources\DriverCollection;
-use App\Http\Resources\DriverResource;
 use Illuminate\Http\Request;
 
 /*
@@ -24,7 +22,7 @@ Route::group(['prefix' => 'v1'], function() {
 
     Route::fallback(function(){
         return response()->json(['message' => 'Not Implemented'], 501);
-    });
+    })->name('api.fallback.501');
 
     Route::get('/init', 'InitController@index');
 

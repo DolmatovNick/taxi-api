@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
@@ -49,7 +50,7 @@ class Handler extends ExceptionHandler
     {
         if ( $request->is('api/*') ) {
             if ( $exception instanceof MethodNotAllowedHttpException ) {
-                return response()->json(['message' => 'Not Implemented'], 501);
+                return Route::respondWithRoute('api.fallback.501');
             }
         }
 
