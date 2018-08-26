@@ -3,13 +3,24 @@
 
 namespace App\Filters\Driver;
 
+use App\Filters\Contracts\ICriteria;
 use Illuminate\Database\Eloquent\Builder;
 
-class DriverNotHas {
+class DriverNotHas implements ICriteria {
 
-    public function asScope(Builder $query, array $objects)
+    /**
+     * @var array
+     */
+    private $objects;
+
+    function __construct(array $objects)
     {
-        foreach ($objects as $object) {
+        $this->objects = $objects;
+    }
+
+    public function meetCriteria(Builder $query)
+    {
+        foreach ($this->objects as $object) {
             return $query->doesntHave($object);
         }
     }

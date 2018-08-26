@@ -2,15 +2,25 @@
 
 namespace App\Filters\Driver;
 
+use App\Filters\Contracts\ICriteria;
 use Illuminate\Database\Eloquent\Builder;
 
-class DriverHas {
+class DriverHas implements ICriteria {
 
-    public function asScope(Builder $query, array $objects)
+    /**
+     * @var array
+     */
+    private $values;
+
+    function __construct(array $values)
     {
-        foreach ($objects as $object) {
+        $this->values = $values;
+    }
+
+    public function meetCriteria(Builder $query)
+    {
+        foreach ($this->values as $object) {
             $query->has($object);
         }
     }
-
 }

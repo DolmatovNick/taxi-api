@@ -20,31 +20,31 @@ class DriversFilters extends Filters {
 
     protected function have(array $objects)
     {
-        (new DriverHas())->asScope($this->builder, $objects);
+        (new DriverHas($objects))->meetCriteria($this->builder);
     }
 
     protected function notHave(array $objects)
     {
-        (new DriverNotHas())->asScope($this->builder, $objects);
+        (new DriverNotHas($objects))->meetCriteria($this->builder);
     }
 
     protected function orderStatus(int $status)
     {
-        (new DriverHasOrdersWithStatuses())->asScope($this->builder, $status);
+        (new DriverHasOrdersWithStatuses($status))->meetCriteria($this->builder);
     }
 
     protected function haveOrdersCount(string $countJson)
     {
         list($min, $max) = $this->extractMinAndMaxFromJson($countJson);
 
-        (new DriverHasOrdersCount())->asScope($this->builder, $min, $max);
+        (new DriverHasOrdersCount($min, $max))->meetCriteria($this->builder);
     }
 
     protected function orderByOrders($sortDirection = 'ASC')
     {
         $sortDirection = $this->normalizeOrderBy($sortDirection);
 
-        (new DriverOrderByOrdersCount())->asScope($this->builder, $sortDirection);
+        (new DriverOrderByOrdersCount($sortDirection))->meetCriteria($this->builder);
     }
 
 }

@@ -12,7 +12,7 @@ class CarsFilters extends Filters {
     {
         list($min, $max) = $this->extractMinAndMaxFromJson($countJson);
 
-        (new CarHasDriversCount())->asScope($this->builder, $min, $max);
+        (new CarHasDriversCount($min, $max))->meetCriteria($this->builder);
     }
 
 }

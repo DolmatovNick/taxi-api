@@ -3,13 +3,29 @@
 
 namespace App\Filters\Driver;
 
+use App\Filters\Contracts\ICriteria;
 use Illuminate\Database\Eloquent\Builder;
 
-class DriverHasOrdersCount {
+class DriverHasOrdersCount implements ICriteria {
 
-    public function asScope(Builder $query, ?int $min, ?int $max)
+    /**
+     * @var int|null
+     */
+    private $min;
+    /**
+     * @var int|null
+     */
+    private $max;
+
+    function __construct(?int $min, ?int $max)
     {
-        $havingString = $this->getSqlHavingCondition($min, $max);
+        $this->min = $min;
+        $this->max = $max;
+    }
+
+    public function meetCriteria(Builder $query)
+    {
+        $havingString = $this->getSqlHavingCondition($this->min, $this->max);
 
         $query->whereHas('orders', function ($orders) use ($havingString) {
 

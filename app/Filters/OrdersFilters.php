@@ -2,15 +2,15 @@
 
 namespace App\Filters;
 
-use App\Filters\Order\OrderNotInStatuses;
+use App\Filters\Order\OrderNotInStatus;
 
 class OrdersFilters extends Filters {
 
     protected $filters = ['notInStatus'];
 
-    protected function notInStatus(int $statuses)
+    protected function notInStatus(int $status)
     {
-        (new OrderNotInStatuses())->asScope($this->builder, $statuses);
+        (new OrderNotInStatus($status))->meetCriteria($this->builder);
     }
 
 }

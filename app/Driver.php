@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Filters\Driver\DriverHas;
+use App\Filters\Driver\DriverHasOrdersCount;
 use App\Filters\DriversFilters;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;

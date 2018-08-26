@@ -1,12 +1,11 @@
 <?php
 
-
-namespace App\Filters\Driver;
+namespace App\Filters\Order;
 
 use App\Filters\Contracts\ICriteria;
 use Illuminate\Database\Eloquent\Builder;
 
-class DriverHasOrdersWithStatuses implements ICriteria {
+class OrderNotInStatus implements ICriteria {
 
     /**
      * @var int
@@ -20,9 +19,7 @@ class DriverHasOrdersWithStatuses implements ICriteria {
 
     public function meetCriteria(Builder $query)
     {
-        $query->whereHas('orders', function($orders){
-            $orders->inStatus($this->status);
-        });
+        $query->notInStatus($this->status);
     }
 
 }
