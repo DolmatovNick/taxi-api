@@ -241,7 +241,7 @@ Support endpoints
 1. Run `api/v1/init` API endpoint for set up database
 2. All endpoints can used without authentication, except `/api/v1/point-only-for-auth`
 3. Endpoint `/api/v1/point-only-for-auth` needs adding in header `Authorization: Bearer 4f1cc459-a229-43b2-abae-cc2e46e56cbe` 
-4. Login using the credentials login: `admin@mail.com` and password: `123`
+4. Login using the credentials login: `admin` and password: `123`
 
 ## 2 Authenticate
 
