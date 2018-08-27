@@ -91,5 +91,3 @@ $factory->define(App\OrderPoint::class, function (Faker $faker) {
 
     ];
 });
-
-// TODO: Add statuses from DB::table('statuses)->insert(['id' => 1, 'name' => ])

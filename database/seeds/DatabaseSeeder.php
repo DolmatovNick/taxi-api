@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
             OrdersTableSeeder::class,
             OrderPointsTableSeeder::class,
             OrderStatusesTableSeeder::class,
+
+            PassportsTableSeeder::class
         ]);
 
     }
