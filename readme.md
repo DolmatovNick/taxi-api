@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/DolmatovNick/taxi-api/branch/master/graph/badge.svg)](https://codecov.io/gh/DolmatovNick/taxi-api)
+
 # Taxi API
 
 ## Задание
