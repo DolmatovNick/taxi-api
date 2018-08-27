@@ -177,31 +177,31 @@ Support endpoints
 ##### Response
 ```json
 {  
-   data:[  
+   "data":[  
       {  
-         id:1,
-         fio:"Mr. Desmond Eichmann Sr."
+         "id":1,
+         "fio":"Mr. Desmond Eichmann Sr."
       },
       {  
-         id:2,
-         fio:"Dr. Daryl Flatley"
+         "id":2,
+         "fio":"Dr. Daryl Flatley"
       }
       ...
    ],
-   links:{  
-        first: "http://taxi-api.local/api/v1/drivers?page=1",
-        last: "http://taxi-api.local/api/v1/drivers?page=3",
-        prev: null,
-        next: "http://taxi-api.local/api/v1/drivers?page=2"
+   "links":{  
+        "first": "http://taxi-api.local/api/v1/drivers?page=1",
+        "last": "http://taxi-api.local/api/v1/drivers?page=3",
+        "prev": null,
+        "next": "http://taxi-api.local/api/v1/drivers?page=2"
    },
-   meta:{  
-        current_page: 1,
-        from: 1,
-        last_page: 3,
-        path: "http://taxi-api.local/api/v1/drivers",
-        per_page: 5,
-        to: 5,
-        total: 15
+   "meta":{  
+        "current_page": 1,
+        "from": 1,
+        "last_page": 3,
+        "path": "http://taxi-api.local/api/v1/drivers",
+        "per_page": 5,
+        "to": 5,
+        "total": 15
    }
 }
 ```
@@ -271,33 +271,33 @@ Support endpoints
 ##### Response
 ```json
 {  
-   data:[  
+   "data":[  
       {  
-         id:4,
-         fio:"Alexa Cormier",
-         type:"operator"
+         "id":4,
+         "fio":"Alexa Cormier",
+         "type":"operator"
       },
       {  
-         id:9,
-         fio:"Benedict Feeney",
-         type:"driver"
+         "id":9,
+         "fio":"Benedict Feeney",
+         "type":"driver"
       }
       ...
    ],
-   links:{  
-      first:"http://taxi-api.local/api/v1/employees?page=1",
-      last:"http://taxi-api.local/api/v1/employees?page=6",
-      prev:null,
-      next:"http://taxi-api.local/api/v1/employees?page=2"
+   "links":{  
+      "first":"http://taxi-api.local/api/v1/employees?page=1",
+      "last":"http://taxi-api.local/api/v1/employees?page=6",
+      "prev":null,
+      "next":"http://taxi-api.local/api/v1/employees?page=2"
    },
-   meta:{  
-      current_page:1,
-      from:1,
-      last_page:6,
-      path:"http://taxi-api.local/api/v1/employees",
-      per_page:5,
-      to:5,
-      total:26
+   "meta":{  
+      "current_page":1,
+      "from":1,
+      "last_page":6,
+      "path":"http://taxi-api.local/api/v1/employees",
+      "per_page":5,
+      "to":5,
+      "total":26
    }
 }
 ```
