@@ -162,7 +162,7 @@ Support endpoints
 
 | № | Name | Endpoint | Filter|  
 | :---: | :--- | :--- | :--- | 
-| 1 | Get orders with not status X | /drivers  | &notInStatus=6 |
+| 1 | Get orders with not status X | /orders  | &notInStatus=6 |
 
 ## Cars filters
 
@@ -212,55 +212,55 @@ Support endpoints
 ##### Response
 ```json
 {  
-   data:[  
+   "data":[  
       {  
-         id:6,
-         operator:"Cecile Swaniawski",
-         points:[  
+         "id":6,
+         "operator":"Cecile Swaniawski",
+         "points":[  
             {  
-               id:13,
-               address:"982 Medhurst Manors Suite 394 Robelview, PA 54314-5251",
-               type:"pickup"
+               "id":13,
+               "address":"982 Medhurst Manors Suite 394 Robelview, PA 54314-5251",
+               "type":"pickup"
             },
             {  
-               id:14,
-               address:"80746 Merl Pike Eldoraberg, PA 03493",
-               type:"stepout"
+               "id":14,
+               "address":"80746 Merl Pike Eldoraberg, PA 03493",
+               "type":"stepout"
             }
          ]
       },
       {  
-         id:9,
-         operator:"Miss Rosetta Jerde",
-         points:[  
+         "id":9,
+         "operator":"Miss Rosetta Jerde",
+         "points":[  
             {  
-               id:19,
-               address:"1233 Moore Pass Mitchellburgh, IA 38561-4032",
-               type:"pickup"
+               "id":19,
+               "address":"1233 Moore Pass Mitchellburgh, IA 38561-4032",
+               "type":"pickup"
             },
             {  
-               id:20,
-               address:"640 Altenwerth Ville Suite 734 Lake Luciousville, AK 69536",
-               type:"stepout"
+               "id":20,
+               "address":"640 Altenwerth Ville Suite 734 Lake Luciousville, AK 69536",
+               "type":"stepout"
             }
          ]
       }
       ...
    ],
-   links:{  
-        first: "http://taxi-api.local/api/v1/orders?page=1",
-        last: "http://taxi-api.local/api/v1/orders?page=20",
-        prev: null,
-        next: "http://taxi-api.local/api/v1/orders?page=2"
+   "links":{  
+        "first": "http://taxi-api.local/api/v1/orders?page=1",
+        "last": "http://taxi-api.local/api/v1/orders?page=20",
+        "prev": null,
+        "next": "http://taxi-api.local/api/v1/orders?page=2"
    },
-   meta:{  
-        current_page: 1,
-        from: 1,
-        last_page: 20,
-        path: "http://taxi-api.local/api/v1/orders",
-        per_page: 5,
-        to: 5,
-        total: 100
+   "meta":{  
+        "current_page": 1,
+        "from": 1,
+        "last_page": 20,
+        "path": "http://taxi-api.local/api/v1/orders",
+        "per_page": 5,
+        "to": 5,
+        "total": 100
    }
 }
 ```
