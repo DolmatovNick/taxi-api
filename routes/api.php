@@ -34,8 +34,13 @@ Route::group(['prefix' => 'v1'], function() {
 
     Route::get('/cars', 'CarController@index');
 
+    Route::post('/login', 'AuthApi\PassportController@login');
+
     Route::get('/point-only-for-auth', function(){
-        return response()->json(['message' => 'You transferred correct token']);
+        return response()->json([
+            'message' => 'You transferred correct token',
+            'userId' => auth()->id()
+        ]);
     })->middleware('auth:api');
 
 });

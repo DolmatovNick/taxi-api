@@ -5,22 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Artisan;
 
-class InitController extends Controller
+class InitController extends ApiController
 {
 
-    public function index(JsonResponse $responce)
+    public function index(JsonResponse $response)
     {
         try {
             Artisan::call('migrate:refresh', [
                 '--seed' => true
             ]);
 
-            return $responce->setStatusCode(200)->setData([
+            return $response->setStatusCode(200)->setData([
                 "message" => "Application setted up"
             ]);
 
         } catch (\Exception $ex){
-            return $responce->setStatusCode(500)->setData([
+            return $response->setStatusCode(500)->setData([
                 "message" => "Error in during application set up"
             ]);
         }
